@@ -1,34 +1,33 @@
 package hiber.model;
 
 import javax.persistence.*;
-import java.io.Serializable;
+
 
 @Entity
-@Table(name = "car")
-public class Car implements Serializable {
+@Table(name = "cars")
+public class Car {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "model")
+    @Column(name = "model", nullable = false, length = 20)
     private String model;
 
-    @Column(name = "series")
+    @Column(name = "series", nullable = false, length = 255)
     private int series;
 
-    @Id
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
     private User user;
 
     public Car() {
 
     }
 
-    public Car(String model, User user) {
+    public Car(String model, int series) {
         this.model = model;
-        this.user = user;
+        this.series = series;
     }
 
     public Long getId() {
@@ -61,7 +60,6 @@ public class Car implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
-        user.setCar(this);
     }
 
     @Override
